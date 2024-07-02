@@ -1,0 +1,67 @@
+body {
+    background-color: #f0f0f0; 
+}
+
+.fon1 {
+    background-color: #fff;
+    padding: 20px;
+}
+
+/* Общие стили для всех input и textarea */
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.submit {
+    padding: 10px 20px;
+    background-color: #00ff40;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.submit:hover {
+    background-color: #8f00b3;
+}
+.error {
+    border-color: red;
+}
+/* Стили для поля с ФИО */
+/* Стили для поля с ФИО */
+input[name="names"] {
+    border: 1px solid #88b7e6;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Стили для поля с ФИО при фокусе */
+input[name="names"]:focus {
+    border-color: #80ffc0;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Стили для поля с ФИО при вводе неправильного значения */
+input[name="names"][names="error"] {
+    border-color: red;
+}
