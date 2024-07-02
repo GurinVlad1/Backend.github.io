@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!empty($_GET['save'])) {
-        print('Форма сохранена.');
+        print('Спасибо, форма сохранена.');
     }
     include('form.html');
     exit();
@@ -21,20 +21,20 @@ if (empty($_POST['names'])) {
 } else {
     $names = $_POST['names'];
     if (!preg_match('/^[a-zA-Zа-яА-Я\s]{1,150}$/', $names)) {
-        print('Неверный формат ФИО.<br/>');
+        print('Неверный формат ФИО. Допустимы только буквы и пробелы, не более 150 символов.<br/>');
         $errors = TRUE;
     }
 }
 
 if (empty($_POST['phone']) || !preg_match('/^\+?\d{1,15}$/', $_POST['phone'])) {
-    print('Укажите телефонный номер.<br/>');
+    print('Укажите корректный телефонный номер.<br/>');
     $errors = TRUE;
 } else {
     $phone = $_POST['phone'];
 }
 
 if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    print('Укажите адрес электронной почты.<br/>');
+    print('Укажите корректный адрес электронной почты.<br/>');
     $errors = TRUE;
 } else {
     $email = $_POST['email'];
@@ -68,7 +68,7 @@ switch($_POST['gender']) {
 };
 
 if (empty($_POST['Languages'])) {
-    print('Укажите язык программирования.<br/>');
+    print('Укажите хотя бы один язык программирования.<br/>');
     $errors = TRUE;
 }
 
@@ -83,7 +83,7 @@ foreach ($_POST['Languages'] as $language) {
 }
 
 if (empty($_POST['biography'])) {
-    print('Напишите биографию.<br/>');
+    print('Напишите кратко биографию.<br/>');
     $errors = TRUE;
 }
 $biography = $_POST['biography'];
@@ -141,7 +141,7 @@ try {
         }
     }
         
-    print('Форма сохранена.');
+    print('Спасибо, форма сохранена.');
 }
 
 catch(PDOException $e){
