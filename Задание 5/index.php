@@ -73,10 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 $values['names'] = isset($_COOKIE['names_value']) ? strip_tags($_COOKIE['names_value']) : '';
 $values['phone'] = isset($_COOKIE['phone_value']) ? strip_tags($_COOKIE['phone_value']) : '';
 $values['email'] = isset($_COOKIE['email_value']) ? strip_tags($_COOKIE['email_value']) : '';
-$values['data'] = isset($_COOKIE['data_value']) ? $_COOKIE['data_value'] : '';
-$values['gender'] = isset($_COOKIE['gender_value']) ? $_COOKIE['gender_value'] : '';
+$values['data'] = isset($_COOKIE['data_value']) ? strip_tags($_COOKIE['data_value']) : '';
+$values['gender'] = isset($_COOKIE['gender_value']) ? strip_tags($_COOKIE['gender_value']) : '';
 $values['biography'] = isset($_COOKIE['biography_value']) ? strip_tags($_COOKIE['biography_value']) : '';
-$values['agree'] = isset($_COOKIE['agree_value']) ? $_COOKIE['agree_value'] : ''; 
+$values['agree'] = isset($_COOKIE['agree_value']) ? strip_tags($_COOKIE['agree_value']) : ''; 
 if (empty($_COOKIE['language_value'])) {
         $values['language'] = array();
     } else {
