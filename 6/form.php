@@ -22,7 +22,7 @@
   <div class="container">
     <h2>Контактная форма</h2>
     <form action="" method="POST">
-      Имя:<br><input type="text" name="names" <?php if ($errors['names']) {print 'class="group error"';} else print 'class="group"'; ?> value="<?php print $values['names']; ?>">
+      ФИО:<br><input type="text" name="NAMES" <?php if ($errors['NAMES']) {print 'class="group error"';} else print 'class="group"'; ?> value="<?php print $values['NAMES']; ?>">
       <br>
       Телефон:<br><input type="tel" name="phone" <?php if ($errors['phone']) {print 'class="group error"';} else print 'class="group"'; ?> value="<?php print $values['phone']; ?>">
       <br>
@@ -38,7 +38,7 @@
         <input class="radio" type="radio" name="gender" value="W" <?php if ($values['gender'] == 'W') {print 'checked';} ?>> Женский
       </div>
       Любимый язык программирования:<br>
-      <select class="group" name="languages[]" size="10" multiple>
+      <select class="group" name="language[]" size="10" multiple="multiple">
         <option value="Pascal" <?php if (in_array("Pascal", $values['language'])) {print 'selected';} ?>>Pascal</option>
         <option value="C" <?php if (in_array("C", $values['language'])) {print 'selected';} ?>>C</option>
         <option value="C_plus_plus" <?php if (in_array("C++", $values['language'])) {print 'selected';} ?>>C++</option>

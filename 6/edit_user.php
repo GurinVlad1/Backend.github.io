@@ -1,6 +1,6 @@
 <?php
 // Подключение к базе данных
-$db = new PDO('mysql:host=localhost;dbname=u67312', 'u67312', '5742868', array(PDO::ATTR_PERSISTENT => true));
+$db = new PDO('mysql:host=localhost;dbname=web', 'root', '', array(PDO::ATTR_PERSISTENT => true));
 
 // Проверка, был ли передан параметр id через GET-запрос
 if (!isset($_GET['id'])) {
@@ -22,9 +22,17 @@ if (!$userData) {
 // Если форма была отправлена для обновления
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
     // Обработка данных формы
+    // Обработка массива языков
+    $languages = $_POST['languages'];
+
+    // Сохранение языков в базе данных
+    $stmt = $db->prepare("INSERT INTO application_languages (id, name_of_language) VALUES (?,?)");
+    foreach ($languages as $language) {
+        $stmt->execute([$userId, $language]);
+    }
 
     // Пример обновления данных пользователя в базе данных
-    $stmt = $db->prepare("UPDATE application SET names = ?, phones = ?, email = ?, dates = ?, gender = ?, biography = ? WHERE id = ?");
+    $stmt = $db->prepare("UPDATE application SET names =?, phones =?, email =?, dates =?, gender =?, biography =? WHERE id =?");
     $stmt->execute([
         $_POST['names'],
         $_POST['phones'],
@@ -45,11 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
     $userId = $_GET['id'];
 
     // Удаление связанных записей из таблицы application_languages
-    $stmt = $db->prepare("DELETE FROM application_languages WHERE id_app = ?");
+    $stmt = $db->prepare("DELETE FROM application_languages WHERE id =?");
+    $stmt->execute([$userId]);
+
+    // Удаление связанных записей из таблицы login_pass
+    $stmt = $db->prepare("DELETE FROM login_pass WHERE id =?");
     $stmt->execute([$userId]);
 
     // Затем удаляем пользователя из таблицы application
-    $stmt = $db->prepare("DELETE FROM application WHERE id = ?");
+    $stmt = $db->prepare("DELETE FROM application WHERE id =?");
     $stmt->execute([$userId]);
 
     header("Location: admin.php");
@@ -69,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
     <h1>Редактирование пользователя</h1>
     <form method="POST">
         <label for="names">Имя:</label><br>
-        <input type="text" id="names" name="names" value="<?php echo $userData['names']; ?>"><br>
+        <input type="text" id="names" name="names" value="<?php echo $userData['NAMES']; ?>"><br>
         <label for="phones">Телефон:</label><br>
         <input type="tel" id="phones" name="phones" value="<?php echo $userData['phones']; ?>"><br>
         <label for="email">Email:</label><br>

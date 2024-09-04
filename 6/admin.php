@@ -21,7 +21,7 @@ if (empty($_SERVER['PHP_AUTH_USER']) ||
 }
 
 // Подключение к базе данных и выполнение запросов
-$db = new PDO('mysql:host=localhost;dbname=u67312', 'u67312', '5742868', array(PDO::ATTR_PERSISTENT => true));
+$db = new PDO('mysql:host=localhost;dbname=web', 'root', '', array(PDO::ATTR_PERSISTENT => true));
 
 // Извлечение данных пользователей
 $stmt = $db->query("SELECT * FROM application");
@@ -33,35 +33,43 @@ echo '<tr><th>Имя</th><th>Телефон</th><th>Email</th><th>Год рож�
 foreach ($usersData as $userData) {
     // Вывод данных пользователя в ячейки таблицы
     echo '<tr>';
-    echo '<td>' . $userData['names'] . '</td>';
+    echo '<td>' . $userData['NAMES'] . '</td>';
     echo '<td>' . $userData['phones'] . '</td>';
     echo '<td>' . $userData['email'] . '</td>';
     echo '<td>' . $userData['dates'] . '</td>';
     echo '<td>' . $userData['gender'] . '</td>';
     echo '<td>' . $userData['biography'] . '</td>';
 
-    // Извлечение языков программирования для данного пользователя
-    $stmt = $db->prepare("SELECT id_lang FROM application_languages WHERE id = ?");
-    $stmt->execute([$userData['id']]);
-    $userLanguages = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    echo '<td>' . implode(', ', $userLanguages) . '</td>';
-
-    // Действия: редактирование и удаление
-    echo '<td><a href="edit_user.php?id=' . $userData['id'] . '">Редактировать</a> | <form action="delete_user.php" method="post"><input type="hidden" name="id" value="' . $userData['id'] . '"><input type="submit" value="Удалить"></form></td>';
-    echo '</tr>';
-}
-echo '</table>';
-
-// Вывод статистики по языкам программирования
-$stmt = $db->query("SELECT id_lang, COUNT(*) AS count FROM application_languages GROUP BY id_lang");
-$languagesStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-echo '<h2>Статистика по языкам программирования</h2>';
-echo '<ul>';
-foreach ($languagesStats as $languageStat) {
-    echo '<li>' . $languageStat['id_lang'] . ': ' . $languageStat['count'] . ' пользователей</li>';
-}
-echo '</ul>';
+     // Извлечение языков программирования для данного пользователя 
+     $stmt = $db->prepare("SELECT name_of_language FROM application_languages WHERE id = ?"); 
+     $stmt->execute([$userData['id']]); 
+     $userLanguages = $stmt->fetchAll(PDO::FETCH_COLUMN); 
+     
+     // Проверяем, есть ли языки и выводим их
+     if ($userLanguages) { 
+         echo '<td>' . implode(', ', array_map('htmlspecialchars', $userLanguages)) . '</td>'; 
+         
+         // Обновляем статистику по языкам
+         foreach ($userLanguages as $language) {
+             if (!isset($languageStats[$language])) {
+                 $languageStats[$language] = 0;
+             }
+             $languageStats[$language]++;
+         }
+     } else { 
+         echo '<td>Нет данных</td>'; // Если нет языков программирования 
+     } 
+ 
+     // Действия: редактирование и удаление 
+     echo '<td><a href="edit_user.php?id=' . $userData['id'] . '">Редактировать</a> | <form action="delete_user.php" method="post"><input type="hidden" name="id" value="' . $userData['id'] . '"><input type="submit" value="Удалить"></form></td>'; 
+     echo '</tr>'; 
+ } 
+ echo '</table>'; 
+ 
+ // Вывод статистики по языкам программирования
+ echo '<h3>Статистика по языкам программирования:</h3>';
+ foreach ($languageStats as $language => $count) {
+     echo htmlspecialchars($language) . ': ' . $count . ' пользователей<br>';
+ }
 
 ?>
